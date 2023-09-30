@@ -38,8 +38,6 @@ spec:
       input:
         method: 'GET'
         path: '/proxy/jenkins/job/test-webhook/lastBuild/consoleText'
-        headers:
-          content-type: 'application/json'
   output:
     getResponse: '{{ steps.backstage_output.output.body }}'
     getCode: '{{ steps.backstage_output.output.code }}'
