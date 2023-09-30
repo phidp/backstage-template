@@ -1,0 +1,38 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: trigger-jenkins-build
+  title: Trigger Jenkins pipeline template
+  description: Testing trigger Jenkins pipeline template
+spec:
+  owner: phidp
+  type: service
+
+  parameters:
+    - title: Fill in some params
+      required:
+        - name
+        - bar
+      properties:
+        name:
+          title: Name
+          type: string
+          description: 'This is name field'
+        bar:
+          title: Bar
+          type: string
+          description: 'This is bar field'
+
+  steps:
+    - id: backstage_request
+      name: backstage request
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: '/proxy/jenkins/job/test-webhook/buildWithParameters?name=${{ parameters.name }}&bar=${{ parameters.bar }}'
+        headers:
+          content-type: 'application/json'
+  output:
+    getResponse: '{{ steps.backstage_request.output.body }}'
+    getCode: '{{ steps.backstage_request.output.code }}'
+    getHeaders: '{{ steps.backstage_request.output.headers }}'
