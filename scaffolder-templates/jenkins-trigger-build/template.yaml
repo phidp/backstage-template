@@ -32,7 +32,15 @@ spec:
         path: '/proxy/jenkins/job/test-webhook/buildWithParameters?name=${{ parameters.name }}&bar=${{ parameters.bar }}'
         headers:
           content-type: 'application/json'
+    - id: backstage_output
+      name: backstage output
+      action: http:backstage:request
+      input:
+        method: 'GET'
+        path: '/proxy/jenkins/job/test-webhook/lastBuild/consoleText'
+        headers:
+          content-type: 'application/json'
   output:
-    getResponse: '{{ steps.backstage_request.output.body }}'
-    getCode: '{{ steps.backstage_request.output.code }}'
-    getHeaders: '{{ steps.backstage_request.output.headers }}'
+    getResponse: '{{ steps.backstage_output.output.body }}'
+    getCode: '{{ steps.backstage_output.output.code }}'
+    getHeaders: '{{ steps.backstage_output.output.headers }}'
